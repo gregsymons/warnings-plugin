@@ -6,6 +6,7 @@ import com.thoughtworks.xstream.XStream;
 
 import hudson.model.AbstractBuild;
 
+import hudson.model.Run;
 import hudson.plugins.analysis.core.BuildHistory;
 import hudson.plugins.analysis.core.ParserResult;
 import hudson.plugins.analysis.core.ResultAction;
@@ -30,24 +31,22 @@ public class WarningsResult extends BuildResult {
 
     /**
      * Creates a new instance of {@link WarningsResult}.
-     *
-     * @param build
+     *  @param build
      *            the current build as owner of this action
      * @param history
      *            the build history
      * @param result
-     *            the parsed result with all annotations
+ *            the parsed result with all annotations
      * @param defaultEncoding
-     *            the default encoding to be used when reading and parsing files
+*            the default encoding to be used when reading and parsing files
      * @param group
-     *            the parser group this result belongs to
      */
-    public WarningsResult(final AbstractBuild<?, ?> build, final BuildHistory history,
+    public WarningsResult(final Run<?, ?> build, final BuildHistory history,
             final ParserResult result, final String defaultEncoding, final String group) {
         this(build, history, result, defaultEncoding, group, group == null ? false : true);
     }
 
-    WarningsResult(final AbstractBuild<?, ?> build, final BuildHistory history,
+    WarningsResult(final Run<?, ?> build, final BuildHistory history,
             final ParserResult result, final String defaultEncoding,
             final String group, final boolean canSerialize) {
         super(build, history, result, defaultEncoding);

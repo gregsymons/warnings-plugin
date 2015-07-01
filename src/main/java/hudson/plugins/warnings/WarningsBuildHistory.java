@@ -4,6 +4,7 @@ import javax.annotation.CheckForNull;
 import java.util.List;
 
 import hudson.model.AbstractBuild;
+import hudson.model.Run;
 import hudson.plugins.analysis.core.BuildHistory;
 
 /**
@@ -16,19 +17,17 @@ public class WarningsBuildHistory extends BuildHistory {
 
     /**
      * Creates a new instance of {@link WarningsBuildHistory}.
-     *
-     * @param lastFinishedBuild
+     *  @param lastFinishedBuild
      *            the last finished build
      * @param group
      *            the parser group
      * @param usePreviousBuildAsReference
-     *            determines whether to use the previous build as the reference
-     *            build
+ *            determines whether to use the previous build as the reference
+ *            build
      * @param useStableBuildAsReference
-     *            determines whether only stable builds should be used as
-     *            reference builds or not
+*            determines whether only stable builds should be used as
      */
-    public WarningsBuildHistory(final AbstractBuild<?, ?> lastFinishedBuild, @CheckForNull final String group,
+    public WarningsBuildHistory(final Run<?, ?> lastFinishedBuild, @CheckForNull final String group,
             final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference) {
         super(lastFinishedBuild, WarningsResultAction.class, usePreviousBuildAsReference, useStableBuildAsReference);
 
@@ -36,7 +35,7 @@ public class WarningsBuildHistory extends BuildHistory {
     }
 
     @Override
-    public WarningsResultAction getResultAction(final AbstractBuild<?, ?> build) {
+    public WarningsResultAction getResultAction(final Run<?, ?> build) {
         List<WarningsResultAction> actions = build.getActions(WarningsResultAction.class);
         if (group != null) {
             for (WarningsResultAction action : actions) {

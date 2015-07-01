@@ -8,6 +8,8 @@ import org.kohsuke.stapler.StaplerRequest;
 
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
+import hudson.model.Job;
+import hudson.model.Run;
 import hudson.plugins.analysis.core.AbstractProjectAction;
 import hudson.plugins.analysis.core.BuildHistory;
 import hudson.plugins.analysis.core.NullBuildHistory;
@@ -44,7 +46,7 @@ public class WarningsProjectAction extends AbstractProjectAction<WarningsResultA
      * @param group
      *            the group of the parsers that share this action
      */
-    public WarningsProjectAction(final AbstractProject<?, ?> project, final String group) {
+    public WarningsProjectAction(final Job<?, ?> project, final String group) {
         super(project, WarningsResultAction.class,
                 ParserRegistry.getParser(group).getLinkName(), ParserRegistry.getParser(group).getTrendName(),
                 WarningsDescriptor.getProjectUrl(group),
@@ -82,7 +84,7 @@ public class WarningsProjectAction extends AbstractProjectAction<WarningsResultA
     }
 
     @Override
-    protected WarningsResultAction getResultAction(final AbstractBuild<?, ?> lastBuild) {
+    protected WarningsResultAction getResultAction(final Run<?, ?> lastBuild) {
         return createHistory(lastBuild).getResultAction(lastBuild);
     }
 
@@ -93,7 +95,7 @@ public class WarningsProjectAction extends AbstractProjectAction<WarningsResultA
      */
     @Override
     protected BuildHistory createBuildHistory() {
-        AbstractBuild<?, ?> lastFinishedBuild = getLastFinishedBuild();
+        Run<?, ?> lastFinishedBuild = getLastFinishedBuild();
         if (lastFinishedBuild == null) {
             return new NullBuildHistory();
         }
@@ -102,7 +104,7 @@ public class WarningsProjectAction extends AbstractProjectAction<WarningsResultA
         }
     }
 
-    private WarningsBuildHistory createHistory(final AbstractBuild<?, ?> build) {
+    private WarningsBuildHistory createHistory(final Run<?, ?> build) {
         return new WarningsBuildHistory(build, parser, false, false);
     }
 }

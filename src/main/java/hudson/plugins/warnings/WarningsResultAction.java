@@ -1,9 +1,16 @@
 package hudson.plugins.warnings;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.jvnet.localizer.Localizable;
+
+import jenkins.tasks.SimpleBuildStep;
 
 import hudson.model.AbstractBuild;
 
+import hudson.model.Action;
+import hudson.model.Run;
 import hudson.plugins.analysis.core.HealthDescriptor;
 import hudson.plugins.analysis.core.AbstractResultAction;
 import hudson.plugins.analysis.core.PluginDescriptor;
@@ -20,21 +27,20 @@ import hudson.plugins.warnings.parser.ParserRegistry;
  *
  * @author Ulli Hafner
  */
-public class WarningsResultAction extends AbstractResultAction<WarningsResult> {
+public class WarningsResultAction extends AbstractResultAction<WarningsResult> implements SimpleBuildStep.LastBuildAction {
     private final String parserName;
 
     /**
      * Creates a new instance of <code>WarningsResultAction</code>.
-     *
-     * @param owner
+     *  @param owner
      *            the associated build of this action
      * @param healthDescriptor
      *            health descriptor to use
      * @param result
-     *            the result in this build
+ *            the result in this build
      * @param parserName the name of the parser
      */
-    public WarningsResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor, final WarningsResult result, final String parserName) {
+    public WarningsResultAction(final Run<?, ?> owner, final HealthDescriptor healthDescriptor, final WarningsResult result, final String parserName) {
         super(owner, new WarningsHealthDescriptor(healthDescriptor, ParserRegistry.getParser(parserName).getParserName()), result);
 
         this.parserName = parserName;
@@ -79,4 +85,9 @@ public class WarningsResultAction extends AbstractResultAction<WarningsResult> {
     @SuppressWarnings("PMD")
     @edu.umd.cs.findbugs.annotations.SuppressWarnings("")
     private transient Localizable actionName;
+
+    @Override
+    public Collection<? extends Action> getProjectActions() {
+        return Collections.singleton(new WarningsProjectAction(getOwner().getParent(), parserName));
+    }
 }

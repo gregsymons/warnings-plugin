@@ -165,11 +165,10 @@ public final class WarningsDescriptor extends PluginDescriptor implements Staple
     }
 
     @Override
-    public FormValidation doCheckPattern(@AncestorInPath final AbstractProject<?, ?> project,
-            @QueryParameter final String pattern) throws IOException {
+    public FormValidation doCheckPattern(@QueryParameter final String pattern) throws IOException {
         FormValidation required = FormValidation.validateRequired(pattern);
         if (required.kind == FormValidation.Kind.OK) {
-            return FilePath.validateFileMask(project.getSomeWorkspace(), pattern);
+            return FilePath.validateFileMask(null, pattern);
         }
         else {
             return required;

@@ -4,6 +4,7 @@ import com.thoughtworks.xstream.XStream;
 
 import hudson.model.AbstractBuild;
 
+import hudson.model.Run;
 import hudson.plugins.analysis.core.BuildHistory;
 import hudson.plugins.analysis.core.ParserResult;
 import hudson.plugins.analysis.core.ResultAction;
@@ -37,6 +38,10 @@ public class AggregatedWarningsResult extends BuildResult {
         super(build, history, result, defaultEncoding);
 
         serializeAnnotations(result.getAnnotations());
+    }
+
+    public AggregatedWarningsResult(final Run<?, ?> run, final BuildHistory history, final ParserResult totals, final String defaultEncoding) {
+        super(run, history, totals, defaultEncoding);
     }
 
     @Override

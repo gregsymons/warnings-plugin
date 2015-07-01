@@ -24,6 +24,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import jenkins.model.Jenkins;
+
 import hudson.model.Hudson;
 import hudson.plugins.analysis.core.PluginDescriptor;
 import hudson.plugins.analysis.util.EncodingValidator;
@@ -52,7 +54,7 @@ public class ParserRegistry {
      */
     @SuppressWarnings("javadoc")
     private static List<AbstractWarningsParser> all() {
-        Hudson instance = Hudson.getInstance();
+        Jenkins instance = Jenkins.getInstance();
         if (instance == null) {
             return Lists.newArrayList();
         }
@@ -63,7 +65,7 @@ public class ParserRegistry {
     }
 
     @SuppressWarnings("deprecation")
-    private static void addParsersWithDeprecatedApi(final Hudson instance, final List<AbstractWarningsParser> parsers) {
+    private static void addParsersWithDeprecatedApi(final Jenkins instance, final List<AbstractWarningsParser> parsers) {
         for (WarningsParser parser : instance.getExtensionList(WarningsParser.class)) {
             if (!(parser instanceof AbstractWarningsParser)) {
                 parsers.add(new ParserAdapter(parser));

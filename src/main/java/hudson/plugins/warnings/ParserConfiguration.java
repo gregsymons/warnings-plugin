@@ -112,19 +112,16 @@ public class ParserConfiguration extends AbstractDescribableImpl<ParserConfigura
         /**
          * Verifies the file pattern. Checks, if the path is valid and exists.
          *
-         * @param project
-         *            the selected project
          * @param pattern
          *            the specified pattern
          * @return the validation result
          * @throws IOException
          *             in case of an exception during file system access
          */
-        public FormValidation doCheckPattern(@AncestorInPath final AbstractProject<?, ?> project,
-                @QueryParameter final String pattern) throws IOException {
+        public FormValidation doCheckPattern(@QueryParameter final String pattern) throws IOException {
             FormValidation required = FormValidation.validateRequired(pattern);
             if (required.kind == FormValidation.Kind.OK) {
-                return FilePath.validateFileMask(project.getSomeWorkspace(), pattern);
+                return FilePath.validateFileMask(null, pattern);
             }
             else {
                 return required;
